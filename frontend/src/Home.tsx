@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 type FormatCardProps = {
   name: string,
@@ -8,6 +9,19 @@ type FormatCardProps = {
 }
 
 export default function Home() {
+  const [ formatSectionScroll, setFormatSectionScroll ] = useState(false);
+  const formatsSectionRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if ( formatSectionScroll && formatsSectionRef.current) {
+      formatsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+      setFormatSectionScroll(false);
+    } else if ( formatsSectionRef.current && location.state?.scrollTo === "formats") {
+      formatsSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [formatSectionScroll]);
+
   const formats = [
     {
       name: 'Tombola',
@@ -38,7 +52,8 @@ export default function Home() {
         <h1 className="text-5xl font-bold">B.L.O.A.T.</h1>
         <p className="text-gray-400">Bizzare Last One Alive Tournament Formats</p>
         <div>
-          <button className="mt-4 text-black font-bold bg-white flex p-4 mx-auto rounded-lg
+          <button onClick={() => setFormatSectionScroll(true)} 
+          className="mt-4 text-black font-bold bg-white flex p-4 mx-auto rounded-lg
           hover:bg-pink-600">
             Get Your Game On!
           </button>
@@ -46,7 +61,7 @@ export default function Home() {
 
       </main>
 
-      <section className="flex px-32 justify-between mb-12">
+      <section ref={ formatsSectionRef } className="flex px-32 justify-between mb-12">
         { formatsList }
       </section>
 
