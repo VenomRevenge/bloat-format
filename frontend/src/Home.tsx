@@ -1,7 +1,10 @@
+import { Link } from 'react-router-dom';
+
 type FormatCardProps = {
   name: string,
   description: string,
   imageUrl: string,
+  route: string,
 }
 
 export default function Home() {
@@ -10,19 +13,22 @@ export default function Home() {
       name: 'Tombola',
       description: 'Some description for tombola',
       imageUrl: 'https://picsum.photos/300/',
+      route: '/',
     },
     {
       name: '1v1v*',
       description: 'Some description for 1v1v*',
       imageUrl: 'https://picsum.photos/300/',
+      route: '/format1v1v',
     },{
       name: 'Tag',
       description: 'Some description for tag',
       imageUrl: 'https://picsum.photos/300/',
+      route: '/',
     },
   ]
 
-  const formatsList = formats.map(format => <FormatCard name={format.name} description={format.description} imageUrl={format.imageUrl} />)
+  const formatsList = formats.map(format => <FormatCard key={ format.name } name={format.name} description={format.description} imageUrl={format.imageUrl} route={ format.route }/>)
   
 
   return (
@@ -48,13 +54,15 @@ export default function Home() {
   );
 };
 
-function FormatCard({ name, description, imageUrl }: FormatCardProps){
+function FormatCard({ name, description, imageUrl, route }: FormatCardProps){
   
   return (
     <div className="flex flex-col gap-4">
+      <Link to={route}>
           <img src={ imageUrl } alt="" className="rounded-xl" />
           <h5 className="text-center font-bold text-2xl">{ name }</h5>
           <p className="text-gray-400 text-center">{ description }</p>
+        </Link>
     </div>
   )
 }
